@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import {
   Collapse,
@@ -7,62 +6,43 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   NavbarText,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
-function myNavBar({isLoggedIn}) {
-    const [isOpen, setIsOpen] = useState(false);
-    const toggle = () => setIsOpen(!isOpen);
+function MyNavBar({ isLoggedIn }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
 
   return (
     <div>
-        <Navbar color="primary" expand = {"sm"}>
+      <Navbar color="primary" expand="sm">
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="me-auto" navbar>
             <NavItem>
-              <link className="nav-link" to={"/"}>
+              <Link className="nav-link" to="/">
                 Home
-
-              </link>
+              </Link>
             </NavItem>
 
             <NavItem>
-              <link className="nav-link" to={"/"}>
+              <Link className="nav-link" to="/cart">
                 Cart
-
-              </link>
+              </Link>
             </NavItem>
 
             <NavItem>
-              <link className="nav-link" to={"/"}>
+              <Link className="nav-link" to="/login">
                 Login
-
-              </link>
+              </Link>
             </NavItem>
-
-            
-            
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
-
+          {/* <NavbarText>My Nav Bar</NavbarText> */}
         </Collapse>
       </Navbar>
-            
- 
-  </div>
-);
+    </div>
+  );
 }
 
-
- 
-
- export default myNavBar;
-
-
+export default MyNavBar;
