@@ -52,3 +52,37 @@ export const SliderItems = [
     
     
   ] 
+
+  export const BestSellingData = [
+    { name: 'Hand Bag',
+      Description: 'this s a jeans bag with good quality', 
+      images: ["/images/image4.jpg"  ], 
+      price: '2000', 
+      reviews: [],
+    },
+
+    { name: 'Hand Bag',
+        Description: 'this s a jeans bag with good quality', 
+        images: ["/images/image4.jpg"  ], 
+        price: '2000', 
+        reviews: [],
+      },
+
+      { name: 'Hand Bag',
+        Description: 'this s a jeans bag with good quality', 
+        images: ["/images/image4.jpg"  ], 
+        price: '2000', 
+        reviews: [],
+      },
+
+      { name: 'Hand Bag',
+        Description: 'this s a jeans bag with good quality', 
+        images: ["/images/image4.jpg"  ], 
+        price: '2000', 
+        reviews: [],
+      },
+
+    
+    
+  ] 
+

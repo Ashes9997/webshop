@@ -1,4 +1,4 @@
- import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Carousel,
   CarouselItem,
@@ -14,22 +14,34 @@ import {
   CardSubtitle,
   CardText,
   Button,
-} from 'reactstrap';
-//  import SliderItems from "../Data";
+  Container,
+  Row,
+  Col,
+  Spinner,
+  ButtonGroup,
+} from "reactstrap";
+import { SliderItems, NewArrivalData, BestSellingData } from "../Data";
+import { addToCart } from "../slice/cart";
+import { useDispatch } from "react-redux";
 
 export default function Home() {
+  const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(0);
   const [animating, setAnimating] = useState(false);
+  const [Loading, setLoading] = useState(true);
+  const [SelectedTab, setSelectedTab] = useState(1);
 
   const next = () => {
     if (animating) return;
-    const nextIndex = activeIndex === SliderItems.length - 1 ? 0 : activeIndex + 1;
+    const nextIndex =
+      activeIndex === SliderItems.length - 1 ? 0 : activeIndex + 1;
     setActiveIndex(nextIndex);
   };
 
   const previous = () => {
     if (animating) return;
-    const nextIndex = activeIndex === 0 ? SliderItems.length - 1 : activeIndex - 1;
+    const nextIndex =
+      activeIndex === 0 ? SliderItems.length - 1 : activeIndex - 1;
     setActiveIndex(nextIndex);
   };
 
@@ -38,10 +50,40 @@ export default function Home() {
     setActiveIndex(newIndex);
   };
 
-  
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+
+    }, 1500)
+
+  }, [])
+
+
+// Function to render items on webpage according to the selected tab of new arrival and best selling 
+  const renderItems = (data) => {
+    return data.map((item, index) => (
+      <Col key={`${index}`} xs={12} sm={4}>
+        {/* code for card to show products */}
+        <Card>
+          <img alt="Sample" src={item.images[0]} />
+          <CardBody>
+            <CardTitle tag="h5"> {item.name} </CardTitle>
+            <CardSubtitle className="mb-2 text-muted" tag="h6">
+              {item.price}
+            </CardSubtitle>
+            <CardText>
+              {item.Description}
+            </CardText>
+            <Button onClick={() => dispatch(addToCart(item))}>Add to Cart</Button>
+          </CardBody>
+        </Card>
+      </Col>
+    ));
+
+  }
 
   return (
-    <div>
+    <Container>
       <Carousel activeIndex={activeIndex} next={next} previous={previous}>
         <CarouselIndicators
           items={SliderItems}
@@ -49,20 +91,20 @@ export default function Home() {
           onClickHandler={goToIndex}
         />
         {SliderItems.map((item) => {
-        return (
-          <CarouselItem
-            onExiting={() => setAnimating(true)}
-            onExited={() => setAnimating(false)}
-            key={item.src}
-          >
-            <img src={item.src} alt={item.altText} />
-            <CarouselCaption
-              captionText={item.caption}
-              captionHeader={item.caption}
-            />
-          </CarouselItem>
-            );
-          })}
+          return (
+            <CarouselItem
+              onExiting={() => setAnimating(true)}
+              onExited={() => setAnimating(false)}
+              key={item.src}
+            >
+              <img src={item.src} alt={item.altText} />
+              <CarouselCaption
+                captionText={item.caption}
+                captionHeader={item.caption}
+              />
+            </CarouselItem>
+          );
+        })}
         <CarouselControl
           direction="prev"
           directionText="Previous"
@@ -75,30 +117,34 @@ export default function Home() {
         />
       </Carousel>
 
-      {/* Nav Links for two tabs */}
-      <Nav justified card fill tabs>
-        <NavItem>
-          <NavLink active href="#">
-            Link
-          </NavLink>
-        </NavItem>
-        <NavItem>
-          <NavLink href="#">
-            Another Link
-          </NavLink>
-        </NavItem>
-      </Nav>
-
-      {/* code for card to show products */}
-      <Card>
-        <img alt="Sample" src="https://picsum.photos/300/200"/>
-        <CardBody>
-          <CardTitle tag="h5"> Card title </CardTitle>
-          <CardSubtitle className="mb-2 text-muted"tag="h6">Card subtitle </CardSubtitle>
-          <CardText>Some quick example text to build on the card title and make up the bulk of the card‘s content.</CardText>
-          <Button>Add to Cart</Button>
-        </CardBody>
-      </Card>
-    </div>
+      {/* Radio Button for two tabs */}
+      <ButtonGroup>
+        <Button
+          color="primary"
+          outline
+          onClick={() => setSelectedTab(1)}
+          active={SelectedTab === 1}
+        >
+          NewArrival
+        </Button>
+        <Button
+          color="primary"
+          outline
+          onClick={() => setSelectedTab(2)}
+          active={SelectedTab === 2}
+        >
+          Best Selling
+        </Button>
+      </ButtonGroup>
+      {Loading ? <Spinner>Loading....</Spinner> : (
+        <Row>
+         {SelectedTab === 1
+          ? renderItems(NewArrivalData) 
+          : renderItems.BestSellingData
+          }
+       </Row>
+      )} 
+     
+    </Container>
   );
 }
